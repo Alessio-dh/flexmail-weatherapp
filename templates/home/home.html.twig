@@ -1,0 +1,84 @@
+{% extends '/base.html.twig' %}
+{% block body %}
+    <div class="site-content">
+        <div class="site-header">
+            <div class="container">
+                <div class="branding">
+                    <div class="logo-type">
+                        <h1 class="site-title">Flexmail - Alessio</h1>
+                        <small class="site-description">Where weather and Flexmail collide</small>
+                    </div>
+                </div>
+
+                <!-- Default snippet for navigation -->
+                <div class="main-navigation">
+                    <button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+                    <ul class="menu">
+                        <li class="menu-item current-menu-item"><a href="/">Forecast</a></li>
+                        <li class="menu-item"><a href="/history">Last 30 Days</a></li>
+                    </ul> <!-- .menu -->
+                </div> <!-- .main-navigation -->
+
+                <div class="mobile-navigation"></div>
+
+            </div>
+        </div> <!-- .site-header -->
+
+        {% for message in app.flashes('error') %}
+            <div style="padding-top: 20px;padding-bottom: 20px;text-align: center;background-color: brown;">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="hero" data-bg-image="{{ asset('assets/images/banner.png') }}">
+        </div>
+        <div class="forecast-table">
+            <div class="container">
+                <div class="forecast-container">
+                    {% for forecast in forecasts %}
+                        {% if forecast.isToday %}
+                            <div class="today forecast">
+                                <div class="forecast-header">
+                                    <div class="day">{{ forecast.date|date('l') }}</div>
+                                    <div class="date">{{ forecast.date|date('d M') }}</div>
+                                </div> <!-- .forecast-header -->
+                                <div class="forecast-content">
+                                    <div class="location">{{ geolocation.locationCity }}</div>
+                                    <div class="location" style="font-size: 13px;">{{ geolocation.locationRegion }} | {{ geolocation.locationCountry }}</div>
+                                    <div class="degree">
+                                        <div class="num">{{ forecast.maxtemp|round(0) }}<sup>o</sup>C</div>
+                                        <div class="forecast-icon">
+                                            <img src="{{ asset('assets/images/icons/')}}{{ forecast.icon }}.svg" alt="" width=90>
+                                        </div>
+                                    </div>
+                                    <span><img src="{{ asset('assets/images/icon-umberella.png') }}" alt="">{{ forecast.perception }} %</span>
+                                    <span><img src="{{ asset('assets/images/icon-wind.png')}}" alt="">{{ forecast.windspeed }} km/h</span>
+                                    <span><img src="{{ asset('assets/images/icon-compass.png')}}" alt="">{{ forecast.winddirection }}</span>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="forecast">
+                                <div class="forecast-header">
+                                    <div class="day">{{ forecast.date|date('l') }}</div>
+                                </div> <!-- .forecast-header -->
+                                <div class="forecast-content">
+                                    <div class="forecast-icon">
+                                        <img src="{{ asset('assets/images/icons/')}}{{ forecast.icon }}.svg" alt="" width=48>
+                                    </div>
+                                    <div class="degree">{{ forecast.maxtemp|round(0) }}<sup>o</sup>C</div>
+                                    <small>{{ forecast.mintemp|round(0) }}<sup>o</sup></small>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <footer class="site-footer">
+            <div class="container">
+                <p class="colophon">Made by Alessio De Houwer in application for Flexmail</p>
+            </div>
+        </footer> <!-- .site-footer -->
+    </div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends '/base.html.twig' %}
+{% block body %}
+    <div class="site-content">
+        <div class="site-header">
+            <div class="container">
+                <div class="branding">
+                    <div class="logo-type">
+                        <h1 class="site-title">Flexmail - Alessio</h1>
+                        <small class="site-description">Where weather and Flexmail collide</small>
+                    </div>
+                </div>
+
+                <!-- Default snippet for navigation -->
+                <div class="main-navigation">
+                    <button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+                    <ul class="menu">
+                        <li class="menu-item"><a href="/">Forecast</a></li>
+                        <li class="menu-item current-menu-item"><a href="/history">Last 30 Days</a></li>
+                    </ul> <!-- .menu -->
+                </div> <!-- .main-navigation -->
+
+                <div class="mobile-navigation"></div>
+
+            </div>
+        </div> <!-- .site-header -->
+
+        {% for message in app.flashes('error') %}
+            <div style="padding-top: 20px;padding-bottom: 20px;text-align: center;background-color: brown;margin-bottom: 20px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+            <div class="forecast-table">
+                <div class="container">
+                    {% set loopAmount = (histories|length/10) %}
+                    {% for i in range(0,loopAmount) %}
+                    {% set i=(i*10) %}
+                        <div class="forecast-container" style="margin-top: 0px;">
+                            {% for history in histories|slice(i,10) %}
+                                <div class="forecast">
+                                    <div class="forecast-header">
+                                        <div class="day">{{ history.date|date('l d M Y') }}</div>
+                                    </div> <!-- .forecast-header -->
+                                    <div class="forecast-content">
+                                        <div class="forecast-icon">
+                                            <img src="{{ asset('assets/images/icons/')}}{{ history.icon }}.svg" alt="" width=48>
+                                        </div>
+                                        <div class="degree">{{ history.maxtemp|round(0) }}<sup>o</sup>C</div>
+                                        <small>{{ history.mintemp|round(0) }}<sup>o</sup></small>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        <footer class="site-footer">
+            <div class="container">
+                <p class="colophon">Made by Alessio De Houwer in application for Flexmail</p>
+            </div>
+        </footer> <!-- .site-footer -->
+    </div>
+{% endblock %}
